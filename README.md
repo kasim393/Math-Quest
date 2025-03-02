@@ -24,7 +24,7 @@ To get started with Math Quest, follow these steps:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/Math-Quest.git
+git clone https://github.com/kasim393/Math-Quest.git
 ```
 
 2. Navigate to the project directory:
