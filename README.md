@@ -2,6 +2,8 @@
 
 Math Quest is an interactive web application designed to help users improve their math skills through engaging quests and challenges.
 
+## Demo
+<a href="https://maths-quest.netlify.app/" target="_blank">View Demo</a>
 ## Features
 
 - Interactive math challenges
