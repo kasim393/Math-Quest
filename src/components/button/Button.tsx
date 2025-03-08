@@ -15,7 +15,10 @@ const StyledButton = styled.button<{
   cursor: pointer;
   outline-offset: 2px;
   .front {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
     padding: 12px 24px;
     border-radius: 16px;
     font-size: 1.25rem;

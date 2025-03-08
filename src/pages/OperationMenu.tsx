@@ -57,8 +57,8 @@ const OperationMenu = () => {
           - subtraction
         </Button>
         <Button
-          variant={operation === "*" ? "secondary" : "tertiary"}
-          onClick={() => handleOperation("*")}
+          variant={operation === "x" ? "secondary" : "tertiary"}
+          onClick={() => handleOperation("x")}
         >
           x multiplication
         </Button>

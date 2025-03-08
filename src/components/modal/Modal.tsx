@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Button from "../button/Button";
 import { Link } from "react-router";
+import { GoHomeFill } from "react-icons/go";
 
 const OverLay = styled.div`
   position: fixed;
@@ -32,6 +33,10 @@ const Container = styled.div`
   overflow: auto;
 `;
 
+const BtnDiv = styled.div`
+  margin-top: 16px;
+`;
+
 interface Props {
   children: React.ReactNode;
 }
@@ -40,9 +45,13 @@ const Modal = ({ children }: Props) => {
     <OverLay>
       <Container>
         {children}
-        <Link to="/">
-          <Button variant="primary">Home</Button>
-        </Link>
+        <BtnDiv>
+          <Link to="/">
+            <Button variant="tertiary">
+              <GoHomeFill />
+            </Button>
+          </Link>
+        </BtnDiv>
       </Container>
     </OverLay>
   );

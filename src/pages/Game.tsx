@@ -1,17 +1,13 @@
+import { useState } from "react";
+import { FaPause } from "react-icons/fa";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import styled from "styled-components";
 import Button from "../components/button/Button";
-import { FaPause } from "react-icons/fa";
-import { useState } from "react";
-import ProgressBar from "../components/progressbar/ProgressBar";
 import Modal from "../components/modal/Modal";
-import { useOperationStore } from "../utils/store";
-import {
-  evaluateAnswer,
-  generateOptions,
-  generateRandomNumber,
-  getRandomOperator,
-} from "../utils/helper";
+import ProgressBar from "../components/progressbar/ProgressBar";
+import { useGameLogic } from "../hooks/useGame";
+import { GAME_CONFIG } from "../utils/const";
+import { useDifficultyStore, useOperationStore } from "../utils/store";
 
 const Container = styled.div`
   display: flex;
@@ -80,57 +76,28 @@ const Score = styled.p`
     color: #fff;
   }
 `;
-
 const Game = () => {
-  const [score, setScore] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [lives, setLives] = useState(3);
-  const [isGameOver, setIsGameOver] = useState(false);
-
+  const [isPaused, setIsPaused] = useState(false);
   const operation = useOperationStore((state) => state.operation);
+  const difficulty = useDifficultyStore((state) => state.difficulty);
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const { score, progress, lives, isGameOver, currentQuestion, handleAnswer } =
+    useGameLogic(difficulty, operation);
 
-  const generateQuestions = () => {
-    const questions = [];
-    for (let i = 0; i < 10; i++) {
-      const num1 = generateRandomNumber(1, 10);
-      const num2 = generateRandomNumber(1, 10);
+  const renderLives = () => (
+    <div className="icons">
+      {Array.from({ length: lives }).map((_, index) => (
+        <IoMdHeart key={`full-${index}`} />
+      ))}
+      {Array.from({ length: GAME_CONFIG.INITIAL_LIVES - lives }).map(
+        (_, index) => (
+          <IoMdHeartEmpty key={`empty-${index}`} />
+        )
+      )}
+    </div>
+  );
 
-      let operator = operation;
-      if (operation === "random") {
-        operator = getRandomOperator();
-      }
-
-      const correctAnswer = evaluateAnswer(num1, num2, operator);
-      const options = generateOptions(correctAnswer);
-
-      questions.push({ num1, num2, operator, correctAnswer, options });
-    }
-    return questions;
-  };
-
-  const questions = generateQuestions();
-
-  const checkAnswer = (selectedAnswer: number, correctAnswer: number) => {
-    if (selectedAnswer === correctAnswer) {
-      setScore(score + 10);
-      setProgress(progress + 10);
-    } else {
-      setLives(lives - 1);
-      if (lives === 1) {
-        setIsGameOver(true);
-      }
-    }
-
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      setIsGameOver(true);
-    }
-  };
-
-  const currentQuestion = questions[currentQuestionIndex];
+  if (!currentQuestion) return null;
 
   return (
     <Container>
@@ -138,17 +105,10 @@ const Game = () => {
         <Row>
           <Col>
             <ProgressBar progress={progress} />
-            <div className="icons">
-              {Array.from({ length: lives }).map((_, index) => (
-                <IoMdHeart key={index} />
-              ))}
-              {Array.from({ length: 3 - lives }).map((_, index) => (
-                <IoMdHeartEmpty key={index} />
-              ))}
-            </div>
+            {renderLives()}
           </Col>
           <div>
-            <Button variant="tertiary">
+            <Button variant="tertiary" onClick={() => setIsPaused(!isPaused)}>
               <FaPause />
             </Button>
           </div>
@@ -162,7 +122,7 @@ const Game = () => {
         {currentQuestion.options.map((option, index) => (
           <Option
             key={index}
-            onClick={() => checkAnswer(option, currentQuestion.correctAnswer)}
+            onClick={() => handleAnswer(option, currentQuestion.correctAnswer)}
           >
             {option}
           </Option>
@@ -172,6 +132,12 @@ const Game = () => {
         <Modal>
           <p>Game Over</p>
           <p>Score: {score}</p>
+        </Modal>
+      )}
+      {isPaused && (
+        <Modal>
+          <p>Game Paused</p>
+          <Button onClick={() => setIsPaused(false)}>Resume</Button>
         </Modal>
       )}
     </Container>

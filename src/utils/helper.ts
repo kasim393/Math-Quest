@@ -1,5 +1,5 @@
 export const getRandomOperator = () => {
-  const operators = ["+", "-", "*", "/"];
+  const operators = ["+", "-", "x", "/"];
   const randomIndex = Math.floor(Math.random() * operators.length);
   return operators[randomIndex];
 };
@@ -18,7 +18,7 @@ export const evaluateAnswer = (
       return num1 + num2;
     case "-":
       return num1 - num2;
-    case "*":
+    case "x":
       return num1 * num2;
     case "/":
       return Math.floor(num1 / num2);
