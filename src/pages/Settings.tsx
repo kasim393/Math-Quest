@@ -1,10 +1,3 @@
-/*
-  difficulty level
-  sound 
-  theme
-  language
-*/
-
 import styled from "styled-components";
 import Select from "../components/select/Select";
 import { useDifficultyStore } from "../utils/store";
@@ -52,7 +45,9 @@ const Settings = () => {
         <h3>Difficulty Level</h3>
         <Select
           value={difficulty}
-          onChange={(e) => updateDifficulty(e.target.value)}
+          onChange={(e) =>
+            updateDifficulty(e.target.value as "easy" | "medium" | "hard")
+          }
           items={[
             { label: "Easy", value: "easy" },
             { label: "Medium", value: "medium" },
@@ -77,7 +72,7 @@ const Settings = () => {
       </Item>
       <FooterBtn>
         <Link to="/">
-          <Button>
+          <Button variant="tertiary">
             <IoIosArrowDropleftCircle /> Back
           </Button>
         </Link>

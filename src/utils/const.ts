@@ -1,6 +1,7 @@
 export const GAME_CONFIG = {
   TOTAL_QUESTIONS: 10,
   INITIAL_LIVES: 3,
+  TIMER: 10,
   DIFFICULTY_SETTINGS: {
     easy: {
       maxNumber: 10,

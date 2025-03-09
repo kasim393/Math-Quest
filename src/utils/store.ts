@@ -40,3 +40,16 @@ export const useDifficultyStore = create<DifficultyState & DifficultyAction>()(
     }
   )
 );
+
+type TimerState = {
+  isTimer: boolean;
+};
+
+type TimerAction = {
+  updateIsTimer: (isTimer: TimerState["isTimer"]) => void;
+};
+
+export const useIsTimerStore = create<TimerState & TimerAction>()((set) => ({
+  isTimer: false,
+  updateIsTimer: (isTimer) => set({ isTimer }),
+}));
